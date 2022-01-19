@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="tomcat10">
+    <output-path>$PROJECT_DIR$/out/artifacts/tomcat10</output-path>
+    <root id="root" />
+  </artifact>
+</component>
