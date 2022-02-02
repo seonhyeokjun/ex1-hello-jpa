@@ -2,12 +2,10 @@ package hellojpa;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
-public class Member {
+public class Member{
     @Id
     @GeneratedValue
     @Column(name = "MEMBER_ID")
@@ -16,16 +14,17 @@ public class Member {
     @Column(name = "USERNAME")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
+    @Embedded
+    private Address HomeAddress;
 
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<MemberProduct> memberProducts = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    private List<Address> addressHistory = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -43,11 +42,11 @@ public class Member {
         this.name = name;
     }
 
-    public Team getTeam() {
-        return team;
+    public Address getHomeAddress() {
+        return HomeAddress;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setHomeAddress(Address homeAddress) {
+        HomeAddress = homeAddress;
     }
 }
